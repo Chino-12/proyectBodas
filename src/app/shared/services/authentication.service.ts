@@ -1,39 +1,23 @@
-import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { BehaviorSubject, Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { Injectable, inject } from '@angular/core';
+import { Auth, UserCredential, authState, signInWithEmailAndPassword } from '@angular/fire/auth';
 
-import { User } from '../interfaces/user.type';
+export interface Credential{
+    email: string;
+    password: string;
+}
 
-const USER_AUTH_API_URL = '/api-url';
-
-@Injectable()
+@Injectable({
+    providedIn: 'root',
+})
 export class AuthenticationService {
-    private currentUserSubject: BehaviorSubject<User>;
-    public currentUser: Observable<User>;
+    private auth: Auth = inject(Auth);
+     readonly authState$ = authState(this.auth);
 
-    constructor(private http: HttpClient) {
-        this.currentUserSubject = new BehaviorSubject<User>(JSON.parse(localStorage.getItem('currentUser')));
-        this.currentUser = this.currentUserSubject.asObservable();
-    }
+     LogInWith(credential: Credential) {
+        return signInWithEmailAndPassword(this.auth, credential.email, credential.password);
+      }
 
-    public get currentUserValue(): User {
-        return this.currentUserSubject.value;
-    }
-
-    login(username: string, password: string) {
-        return this.http.post<any>(USER_AUTH_API_URL, { username, password })
-        .pipe(map(user => {
-            if (user && user.token) {
-                localStorage.setItem('currentUser', JSON.stringify(user));
-                this.currentUserSubject.next(user);
-            }
-            return user;
-        }));
-    }
-
-    logout() {
-        localStorage.removeItem('currentUser');
-        this.currentUserSubject.next(null);
-    }
+     logOut(): Promise <void>{
+        return this.auth.signOut()
+     }
 }

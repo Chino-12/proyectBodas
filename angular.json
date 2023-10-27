@@ -141,6 +141,13 @@
               "devServerTarget": "hexadash:serve:production"
             }
           }
+        },
+        "deploy": {
+          "builder": "@angular/fire:deploy",
+          "options": {
+            "version": 2,
+            "browserTarget": "hexadash:build:production"
+          }
         }
       }
     }

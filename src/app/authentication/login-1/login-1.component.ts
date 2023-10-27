@@ -1,54 +1,64 @@
-import { Component } from '@angular/core'
-import { FormBuilder, FormGroup, UntypedFormGroup, Validators } from '@angular/forms';
+import { Component, inject } from '@angular/core'
+import { FormBuilder, FormControl, FormGroup, UntypedFormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import  socialIcons  from './../../../assets/data/pages/social-items.json';
 import { Router } from '@angular/router';
 import { Location } from '@angular/common';
+import { AuthenticationService, Credential } from 'src/app/shared/services/authentication.service';
+import { catchError } from 'rxjs';
+
+interface LoginForm{
+  email: FormControl<string>;
+  password: FormControl<string>
+}
 
 @Component({
     templateUrl: './login-1.component.html'
 })
 
+
 export class Login1Component {
-  loginForm: FormGroup;
-  isLoading = false;
-  error = false;
-  socialMediaButtons = socialIcons.socialMediaButtons;
+  hide = true;
+  FormBuilder = inject(FormBuilder);
+   private authService = inject (AuthenticationService)
+   private router = inject (Router)
 
-  validateForm!: UntypedFormGroup;
+  form: FormGroup<LoginForm> = this.FormBuilder.group({
+    email: this.FormBuilder.control('',{
+      validators:[Validators.required, Validators.email],
+      nonNullable: true,
+    }),
+    password: this.FormBuilder.control('',{
+      validators:[Validators.required, Validators.email],
+      nonNullable: true,
+    }),
+      
+  });
 
-  constructor(private fb: FormBuilder, private router: Router, private location: Location) {}
+validateForm: any;
 
-  submitForm(): void {
-    if (this.validateForm.valid) {
-      console.log('submit', this.validateForm.value);
-      this.router.navigate(['/dashboard/demo-one']).then(() => {
-        window.location.reload();
-      });
-    } else {
-      Object.values(this.validateForm.controls).forEach((control) => {
-        if (control.invalid) {
-          control.markAsDirty();
-          control.updateValueAndValidity({ onlySelf: true });
-        }
-      });
+
+
+  async logIn(): Promise<void> {
+    if (this.form.invalid) return;
+  
+    const credential: Credential= {
+      email: this.form.value.email ||'',
+      password: this.form.value.password ||'',
+    };
+    try{
+      await this.authService.LogInWith(credential)
+      this.router.navigate(['/dashboard/demo-one'])
+    }catch(error){
+      console.log(error)
     }
   }
-
-  updateConfirmValidator(): void {
-    /** wait for refresh value */
-    Promise.resolve().then(() =>
-      this.validateForm.controls.checkPassword.updateValueAndValidity()
-    );
-  }
+ 
+ 
 
   passwordVisible = false;
   password?: string;
 
-  ngOnInit(): void {
-    this.validateForm = this.fb.group({
-      userName: ['hexadash@dm.com', [Validators.required]],
-      password: ['123456', [Validators.required]],
-      remember: [true],
-    });
-  }
+
+
+
 }

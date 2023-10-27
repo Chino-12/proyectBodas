@@ -79,6 +79,7 @@ import { UploadComponent } from './import-export/import/upload';
 import { TableComponent } from './import-export/export/table';
 import { CalendarComponent } from './calendar/calendar.component';
 import { AppOnlyCalendar } from './calendar/full-calendar.component';
+import { AuthenticationService } from '../shared/services/authentication.service';
 
 
 const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
@@ -127,6 +128,8 @@ const antdModule = [
     ],
     exports: [
       FileComponent,
+
+      
     ],
     declarations: [
         ChatComponent,

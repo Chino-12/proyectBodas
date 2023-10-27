@@ -9,6 +9,7 @@ import { NzInputModule } from 'ng-zorro-antd/input';
 import { NzButtonModule } from 'ng-zorro-antd/button';
 import { NzCardModule } from 'ng-zorro-antd/card';
 import { NzCheckboxModule } from 'ng-zorro-antd/checkbox';
+import { AuthenticationService } from '../shared/services/authentication.service';
 
 import { AngularSvgIconModule } from 'angular-svg-icon';
 

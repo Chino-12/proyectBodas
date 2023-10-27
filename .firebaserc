@@ -1,0 +1,14 @@
+{
+  "targets": {
+    "apphexadash": {
+      "hosting": {
+        "hexadash": [
+          "apphexadash"
+        ]
+      }
+    }
+  },
+  "projects": {
+    "default": "apphexadash"
+  }
+}
