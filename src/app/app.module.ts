@@ -30,6 +30,7 @@ import { AuthenticationService } from './shared/services/authentication.service'
 import { provideAuth,getAuth, connectAuthEmulator } from '@angular/fire/auth';
 import { provideFirestore,getFirestore, connectFirestoreEmulator } from '@angular/fire/firestore';
 
+
 registerLocaleData(en);
 
 @NgModule({
@@ -41,6 +42,7 @@ registerLocaleData(en);
     ],
     imports: [
         RouterModule,
+
         BrowserModule,
         BrowserAnimationsModule,
         AppRoutingModule,
@@ -66,7 +68,7 @@ registerLocaleData(en);
             return firestore
         }),
 
-        AngularFireModule.initializeApp(environment.firebase)
+       
     ],
     providers: [
         {

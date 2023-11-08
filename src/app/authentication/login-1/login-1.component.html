@@ -40,7 +40,10 @@
                
                 <a class="text-13 text-primary hover:text-dark dark:hover:text-white/[.87]" routerLink="/authentication/forget-pass">Olvidaste tu contraseña?</a>
               </div>
-              <button nz-button type="submit" 
+              <button 
+              [disabled]="!loginForm.valid"
+              nz-button
+              type="submit"
                 class=" inline-flex items-center justify-center w-full h-[48px] text-14 rounded-6 font-medium bg-primary text-white cursor-pointer hover:bg-primary-hbr border-primary transition duration-300">
                 <i class="fas fa-cog fa-spin" ></i>
                 Log in
