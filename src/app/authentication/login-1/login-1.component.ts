@@ -73,22 +73,18 @@ private initializeForm(): void {
 }
 
 
-
-
-async logIn(): Promise<void> {
-  if (this.loginForm.invalid) return;
-
-  const credential: Credential = {
-    email: this.loginForm.value.email || '',
-    password: this.loginForm.value.password || '',
-  };
-
-  try {
-    await this.authService.login(credential);
-    
-
-  } catch (error) {
-    console.error(error);
+async logIn(): Promise <void>{
+  if (this.loginForm.valid){
+    const email = this.loginForm.get('email').value;
+    const password = this.loginForm.get('password').value;
+  }
+  else{
+    Object.values(this.loginForm.controls).forEach((control)=>{
+      if (control.invalid) {
+        control.markAsDirty();
+        control.updateValueAndValidity({ onlySelf: true });
+      }
+    })
   }
 }
 
