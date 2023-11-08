@@ -55,7 +55,7 @@ constructor() {}
   
 
 ngOnInit(): void {
-  this.initializeForm();
+  
 }
 
 ngOnDestroy(): void {
@@ -63,13 +63,7 @@ ngOnDestroy(): void {
   this.destroy$.unsubscribe();
 }
 
-private initializeForm(): void {
-  this.loginForm = this.formBuilder.group({
-    email: ['', [Validators.required, Validators.email]],
-    password: ['', [Validators.required]],
-    remember: [true],
-  });
-}
+
 
 form: FormGroup<LogInForm> = this.formBuilder.group({
   email: this.formBuilder.control('', {
