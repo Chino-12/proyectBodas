@@ -55,7 +55,7 @@ constructor() {}
   
 
 ngOnInit(): void {
-  
+  this.initializeForm();
 }
 
 ngOnDestroy(): void {
@@ -63,25 +63,24 @@ ngOnDestroy(): void {
   this.destroy$.unsubscribe();
 }
 
+//
+private initializeForm(): void {
+  this.loginForm = this.formBuilder.group({
+    email: ['', [Validators.required, Validators.email]],
+    password: ['', [Validators.required]],
+    remember: [true],
+  });
+}
 
 
-form: FormGroup<LogInForm> = this.formBuilder.group({
-  email: this.formBuilder.control('', {
-    validators: [Validators.required, Validators.email],
-    nonNullable: true,
-  }),
-  password: this.formBuilder.control('', {
-    validators: Validators.required,
-    nonNullable: true,
-  }),
-});
+
 
 async logIn(): Promise<void> {
-  if (this.form.invalid) return;
+  if (this.loginForm.invalid) return;
 
   const credential: Credential = {
-    email: this.form.value.email || '',
-    password: this.form.value.password || '',
+    email: this.loginForm.value.email || '',
+    password: this.loginForm.value.password || '',
   };
 
   try {
